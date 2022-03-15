@@ -15,16 +15,8 @@ Future<List<PlatformFile>> filePathsToPlatformFiles(
         .map((String filePath) async {
       final file = File(filePath);
 
-      if (withReadStream) {
-        return createPlatformFile(file, null, file.openRead());
-      }
-
-      if (!withData) {
-        return createPlatformFile(file, null, null);
-      }
-
       final bytes = await file.readAsBytes();
-      return createPlatformFile(file, bytes, null);
+      return createPlatformFile(file, withData ? bytes : null, withReadStream ? file.openRead() : null);
     }).toList(),
   );
 }
